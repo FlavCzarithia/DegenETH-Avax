@@ -17,6 +17,7 @@ Burning Tokens
 Any user can burn their unused tokens, permanently reducing the total supply.
 Token Balance
 Users can check their balance anytime using standard ERC20 balanceOf functionality.
+
 # Deployment Information
 Contract Name: DegenToken
 Token Name: Degen
