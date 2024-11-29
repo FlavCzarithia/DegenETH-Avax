@@ -1,4 +1,4 @@
-## Overview
+# **Overview**
 DegenToken is an ERC20-compliant smart contract designed for the Avalanche network, specifically for use in the Degen Gaming ecosystem. This token allows for seamless minting, transferring, redeeming, and burning functionalities to enhance the in-game economy.
 
 ## Features
@@ -18,6 +18,15 @@ Any user can burn their unused tokens, permanently reducing the total supply.
 Token Balance
 Users can check their balance anytime using standard ERC20 balanceOf functionality.
 
+# Setup Metamask
+Create a new network with the following information
+Network Name: Avalanche Fuji Testnet
+Default RPC URL:  ​https://api.avax-test.network/ext/bc/C/rpc
+Chain ID: 43113
+Currency Symbol: AVAX
+Block explorer URL: https://testnet.snowtrace.io
+
+Network URL
 # Deployment Information
 Contract Name: DegenToken
 Token Name: Degen
@@ -26,7 +35,46 @@ Network: Avalanche Fuji Testnet
 Contract Address: 0x7682B6DDC20CE79B1cc4C30647F0384E7F2Ab918
 Transaction ID (Deployment): 0xf95e1ebba0529048b4ca9b76dbc8f69fec5afe3ed571dcce18eef9f0c0a0e1c6
 
+## Degen.sol
+'''
 
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract DegenToken is ERC20, Ownable {
+     uint256 public constant NFT_COST = 200;
+    uint256 public constant SKIN_COST = 150;
+    uint256 public constant HEALS_COST = 500;
+    constructor(address ownerAddress) ERC20("Degen", "DGN") Ownable(ownerAddress) {}
+
+    function mintTokens(address recipient, uint256 amount) public onlyOwner {
+        _mint(recipient, amount);
+    }
+
+    function burnTokens(uint256 amount) public {
+        _burn(msg.sender, amount);
+    }
+    function redeemTokens(uint256 itemId, uint256 quantity) public {
+        uint256 cost;
+        if (itemId == 1) {
+            cost = SKIN_COST;
+        } else if (itemId == 2) {
+            cost = NFT_COST;
+        } else if (itemId == 3) {
+            cost = HEALS_COST;
+        } else {
+            revert("Invalid item ID: use 1, 2, or 3.");
+        }
+
+        uint256 totalCost = cost * quantity;
+        _burn(msg.sender, totalCost);
+    }
+}
+
+'''
 ## REMIX DEFAULT WORKSPACE
 
 ## Remix default workspace is present when:
